@@ -1,0 +1,84 @@
+Zebra: 
+  --disable-zebra         do not build zebra daemon
+  --disable-bgpd          do not build bgpd
+  --disable-ripd          do not build ripd
+  --disable-ripngd        do not build ripngd
+  --disable-ospfd         do not build ospfd
+  --disable-ospf6d        do not build ospf6d
+  --enable-irdp           enable IRDP server support in zebra
+  --disable-bgp-announce, turn off BGP route announcement
+
+root@jack-desktop:/home/jack/NetBeansProjects/Zebra# ./configure --disable-zebra --disable-ripd --disable-ripngd --disable-ospfd --disable-ospf6d 
+
+make
+
+make install
+------------------------------------------------------------------------------------------------------------
+
+root@jack-desktop:/home/jack/download/zebra-0.95a/bgpd#  echo 536870912 > /proc/sys/kernel/shmmax
+root@jack-desktop:/home/jack/download/zebra-0.95a/bgpd# more /proc/sys/kernel/shmmax
+536870912
+
+------------------------------------------------------------------------------------------------------------
+/usr/local/etc/bgpd.conf
+bgpd -d
+------------------------------------------------------------------------------------------------------------
+dns_bgp# show ip bgp 202.38.101.12                        
+BGP routing table entry for 202.38.101.0/24
+Paths: (1 available, best #1, table Default-IP-Routing-Table)
+Not advertised to any peer
+  65500 4538
+  202.38.101.13 from 202.38.101.13 (202.38.101.13)
+  Origin IGP, localpref 100, valid, external, best
+  Last update: Fri May 22 04:57:21 2009
+  4538
+
+dns_bgp# show ipv6 bgp 2001:250::1
+BGP routing table entry for 2001:250::/32
+Paths: (1 available, best #1, table Default-IP-Routing-Table)
+  Not advertised to any peer
+    65500 4538
+    :: from 2001:250:3::ca26:650d (202.38.101.13)
+    Origin IGP, localpref 100, valid, external, best
+    Last update: Fri May 22 14:19:44 2009
+
+
+4538
+------------------------------------------------------------------------------------------------------------
+
+Bind:
+./configure
+	vim /bind/bin/named/Makefile
+	add:
+
+	MYSQLLIBS =  -L/usr/local/mysql/lib/mysql -lmysqlclient
+	LIBS =       ... +  ${MYSQLLIBS}
+	// add MYSQLLIBS to LIBS
+	--------------------------------------------------------------------------
+	Howto: Connect MySQL server using C program API under Linux or UNIX
+	http://www.cyberciti.biz/tips/linux-unix-connect-mysql-c-api-program.html
+	--------------------------------------------------------------------------
+make
+make install
+
+------------------------------------------------------------------------------------------------------------
+/etc/named.conf
+named
+------------------------------------------------------------------------------------------------------------
+
+[root@sla11 backup]# nslookup 0.1.66.59.ip2server.sasm4.net localhost
+Server:         localhost
+Address:        127.0.0.1#53
+
+0.1.66.59.ip2server.sasm4.net   canonical name = www.edu.cn.
+Name:   www.edu.cn
+Address: 202.112.0.36
+
+[root@sla11 backup]# nslookup -q=txt 0.1.66.59.ip2asn.sasm4.net localhost
+Server:         localhost
+Address:        127.0.0.1#53
+
+0.1.66.59.ip2asn.sasm4.net      text = "as4538"
+
+------------------------------------------------------------------------------------------------------------
+

@@ -1,0 +1,12 @@
+install mysql-devel, C API for geoip first
+
+change the directory of geodata:
+/bind/bin/named/query.c in function geoloc(const char *host, double *loc)
+GeoIP_open("/home/yk/pathperf/GeoLiteCity.dat", GEOIP_INDEX_CACHE)
+
+./configure
+vim bin/named/Makefile
+set
+LDFLAGS =   `mysql_config --libs` -lGeoIP
+save and exit
+make && make install
